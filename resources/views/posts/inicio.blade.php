@@ -35,7 +35,10 @@
                                         </a>
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4">{{$item->titulo}}</td>
-                                    <td class="whitespace-nowrap px-6 py-4">{{$item->publicado}}</td>
+                                    <td @class([
+                                        "whitespace-nowrap px-6 py-4",
+                                        'text-red-800 font-bold bg-gray-400'=>$item->publicado=='NO'
+                                    ])>{{$item->publicado}}</td>
                                     <td class="whitespace-nowrap px-6 py-4">{{$item->category->nombre}}</td>
                                     <td class="whitespace-nowrap px-6 py-4">
                                     <form method="POST" action="{{route('posts.destroy', $item)}}">
