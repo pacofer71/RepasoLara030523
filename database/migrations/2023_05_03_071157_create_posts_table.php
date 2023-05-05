@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('titulo')->unique();
             $table->text('contenido');
             $table->enum('publicado', ['SI', 'NO']);
-            $table->string('images');
+            $table->string('url');
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
