@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -35,9 +36,17 @@ class PostController extends Controller
             'titulo'=>['required', 'string', 'min:3', 'unique:posts,titulo'],
             'contenido'=>['required', 'string', 'min:10'],
             'publicado'=>['required', 'in:SI,NO'],
-            'category_id'=>['required', 'exists:categories,id']
+            'category_id'=>['required', 'exists:categories,id'], 
+            'url'=>['required', 'image', 'max:2048']
         ]);
-        Post::create($request->all());
+        $rutaImagen=$request->url->store('imagenes');
+        Post::create([
+            'titulo'=>$request->titulo,
+            'contenido'=>$request->contenido,
+            'publicado'=>$request->publicado,
+            'category_id'=>$request->category_id,
+            'url'=>$rutaImagen
+        ]);
         return redirect()->route('posts.index')->with('info', "Post Creado con éxito");
     }
 
@@ -67,9 +76,18 @@ class PostController extends Controller
             'titulo'=>['required', 'string', 'min:3', 'unique:posts,titulo,'.$post->id],
             'contenido'=>['required', 'string', 'min:10'],
             'publicado'=>['required', 'in:SI,NO'],
-            'category_id'=>['required', 'exists:categories,id']
+            'category_id'=>['required', 'exists:categories,id'],
+            'url'=>['nullable', 'image', 'max:2048']
         ]);
-        $post->update($request->all());
+        $rutaImagen=isset($request->url) ? $request->url->store('imagenes') : $post->url;
+        if(isset($request->url)) Storage::delete($post->url);
+        $post->update([
+            'titulo'=>$request->titulo,
+            'contenido'=>$request->contenido,
+            'publicado'=>$request->publicado,
+            'category_id'=>$request->category_id,
+            'url'=>$rutaImagen
+        ]);
         return redirect()->route('posts.index')->with('info', "Post actualizado con éxito");
 
     }

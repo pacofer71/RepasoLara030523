@@ -10,7 +10,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable=['titulo', 'contenido', 'publicado', 'category_id'];
+    protected $fillable=['titulo', 'contenido', 'publicado', 'category_id', 'url'];
 
     //Un post tiene una unica categoria
     public function category(): BelongsTo{

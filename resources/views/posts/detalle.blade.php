@@ -6,8 +6,9 @@
     Detalle Post
 @endsection
 @section('contenido')
- <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto bg-blue-400">
+ <div class="max-w-md rounded overflow-hidden shadow-lg mx-auto bg-blue-400">
   <div class="px-6 py-4">
+  <img src="{{Storage::url($post->url)}}" alt="imagen post">
     <div class="font-bold text-xl mb-2">{{$post->titulo}}</div>
     <p class="text-gray-700 text-base">
     {{$post->contenido}}

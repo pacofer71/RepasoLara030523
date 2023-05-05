@@ -7,7 +7,7 @@
 @endsection
 @section('contenido')
     <div class="p-8 rounded-xl shadow-xl w-1/2 mx-auto bg-gray-300">
-        <form name="as" method="POST" action="{{ route('posts.update', $post) }}">
+        <form name="as" method="POST" action="{{ route('posts.update', $post) }}" enctype="multipart/form-data">
             @csrf
             @method('put')
             <div class="mb-4">
@@ -69,6 +69,21 @@
              @error('publicado')
                         <p class="text-red-700 text-xs italic mt-2">***{{$message}}</p>
             @enderror
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="url">
+                Imagen del Post
+            </label>
+            <div class="flex items-center content-center mb-4">
+                <div class="flex-1 mr-4">
+                    <input type="file" name="url" accept="image/*" id="url" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                </div>
+
+                <div>
+                    <img src="{{ Storage::url($post->url) }}" class="object-center object-cover w-64" id="imagen" />
+                </div>
+            </div>
+            @error('url')
+                <p class="text-red-700 text-xs italic mt-2">***{{ $message }}</p>
+            @enderror
             <div class="flex flex-row-reverse mb-3">
                 <button type="submit" class="ml-4 bg-blue-500 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded">
                     <i class='fas fa-edit'> Editar</i>
@@ -80,4 +95,24 @@
             </div>
         </form>
     </div>
+@endsection
+@section('js')
+    <script>
+        function init() {
+            var inputFile = document.getElementById('url');
+            inputFile.addEventListener('change', mostrarImagen, false);
+        }
+
+        function mostrarImagen(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var img = document.getElementById('imagen');
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        window.addEventListener('load', init, false);
+    </script>
 @endsection
