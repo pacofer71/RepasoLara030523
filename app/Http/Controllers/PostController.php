@@ -97,6 +97,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        //Borramos físicamente la imagen
+        Storage::delete($post->url);
+        //Borramos el registro de la BBDD
         $post->delete();
         return redirect()->route('posts.index')->with('info', "Post Borrado con éxito");
 
